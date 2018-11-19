@@ -58,10 +58,11 @@ public class Actionlistener implements ActionListener {
 			 String x=response.toString();
 			 JSONObject json = new JSONObject(x);
 			 JSONArray arr=json.getJSONArray("result");
-			 for(int i=0;i<arr.length();i++)//arr.length
+			 for(int i=0;i<arr.length();i++)
 			 {
 				 JSONObject json1=(JSONObject)arr.getJSONObject(i).get("problem");
 				 JSONObject json2=(JSONObject)arr.getJSONObject(i).get("author");
+				 //problems solved in a team are not counted
 				 if(arr.getJSONObject(i).getString("verdict").equals("OK")&&json2.getJSONArray("members").length()==1)
 				 {
 					 total+=1;
