@@ -60,10 +60,12 @@ public class Actionlistener implements ActionListener {
 			 JSONArray arr=json.getJSONArray("result");
 			 for(int i=0;i<arr.length();i++)//arr.length
 			 {
-				 if(arr.getJSONObject(i).getString("verdict").equals("OK"))
+				 JSONObject json1=(JSONObject)arr.getJSONObject(i).get("problem");
+				 JSONObject json2=(JSONObject)arr.getJSONObject(i).get("author");
+				 if(arr.getJSONObject(i).getString("verdict").equals("OK")&&json2.getJSONArray("members").length()==1)
 				 {
 					 total+=1;
-					 JSONObject json1=(JSONObject)arr.getJSONObject(i).get("problem");
+					 //System.out.println(json1.get("name"));
 					 JSONArray arr2=json1.getJSONArray("tags");
 					 for(int j=0;j<arr2.length();j++)
 					 {
@@ -85,8 +87,8 @@ public class Actionlistener implements ActionListener {
 				 }
 		}
 		System.out.println("Total problemes solved by the user: "+total);
-		for(String s:tg.keySet())
-			System.out.println(s+" "+tg.get(s));
+		/*for(String s:tg.keySet())
+			System.out.println(s+" "+tg.get(s));*/
 		PieChart pc=new PieChart("Codeforces Problem Solving Statistics of user "+usr,tg,total);
 		pc.setSize(560,367);
 		RefineryUtilities.centerFrameOnScreen(pc); 
