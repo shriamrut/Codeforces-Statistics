@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import guis.GUI1;
 import guis.PieChart;
 import org.jfree.ui.RefineryUtilities;
@@ -41,6 +42,7 @@ public class Actionlistener implements ActionListener {
 	{
 		int start=1,total=0;
 		HashMap<String,Integer>tg=new HashMap<String,Integer>();
+		HashSet<String>hs=new HashSet<String>();
 		while(true)
 		{
 			String url=" http://codeforces.com/api/user.status?handle="+usr+"&from="+start+"&count=1000";
@@ -58,14 +60,15 @@ public class Actionlistener implements ActionListener {
 			 String x=response.toString();
 			 JSONObject json = new JSONObject(x);
 			 JSONArray arr=json.getJSONArray("result");
-			 for(int i=0;i<arr.length();i++)
+			 for(int i=0;i<arr.length();i++)//arr.length
 			 {
 				 JSONObject json1=(JSONObject)arr.getJSONObject(i).get("problem");
 				 JSONObject json2=(JSONObject)arr.getJSONObject(i).get("author");
-				 //problems solved in a team are not counted
-				 if(arr.getJSONObject(i).getString("verdict").equals("OK")&&json2.getJSONArray("members").length()==1)
+				 String name=json1.get("name").toString();
+				 if(!hs.contains(name)&&arr.getJSONObject(i).getString("verdict").equals("OK")&&json2.getJSONArray("members").length()==1)
 				 {
 					 total+=1;
+					 hs.add(name);
 					 //System.out.println(json1.get("name"));
 					 JSONArray arr2=json1.getJSONArray("tags");
 					 for(int j=0;j<arr2.length();j++)
